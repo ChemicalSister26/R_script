@@ -11,19 +11,17 @@
 # в группе более чем на два стандартных отклонения этой группы. 
 
 test_data_ap <- read.csv("https://stepic.org/media/attachments/course/724/hard_task.csv")
-fact_var <- as_tibble(lapply(select(test_data_ap, !where(is.numeric)), 
-                             function(x) as.factor(x)))
-num_var <- select(test_data_ap, where(is.numeric))
-test_data_ap <- cbind(fact_var, num_var)
-gr_test <- group_by_at(test_data_ap, names(fact_var))
-summ <- gr_test %>% 
-  summarise(m=mean(x), s=sd(x))
-summ$ms <-  summ$m + 2*summ$s
-summ$negms <- summ$m - 2*summ$s
-names <- names(num_var)
-names1 <- c('ms', 'negms')
-ready <- append(names, names1)
-select(joined_df, all_of(ready))
-joined_df <- left_join(gr_test, summ, by = c("factor_2" = "factor_2"))
-joined_df$is_outlier <- sapply(select(joined_df, where(is.numeric)), function(x) ifelse(x<joined_df$negms| x>joined_df$ms, 1, 0))
-mutate(joined_df, .funs = function(x) )
+        
+find_outliers <- function(t){
+  fact_var <- as_tibble(lapply(select(t, !where(is.numeric)), 
+                               function(x) as.factor(x)))
+  gr_test <- group_by_at(t, names(fact_var))
+  slice(gr_test, 1)
+  summ <- summarise_all(gr_test, list(mean=mean, sd=sd))
+  summ$otp <- summ$mean+2*summ$sd
+  summ$otn <- summ$mean-2*summ$sd
+  joined_df <- left_join(gr_test, summ, by = c("factor_2" = "factor_2"))
+  joined_df$is_outlier <-  ifelse(joined_df$x > joined_df$otp | joined_df$x < joined_df$otn, 1, 0)
+  return(cbind(test_data_ap, is_outlier=joined_df$is_outlier))
+}
+find_outliers(test_data_ap)
