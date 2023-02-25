@@ -208,7 +208,8 @@ descriptive_stats(test_data_2)
 
 to_factors <- function(test_data, factors){
   temp_nf <- as.data.frame(select(test_data, !factors))
-  tem_mut <- mutate_all(as.data.frame(select(test_data, factors)), .funs = function(x) (as.factor(ifelse(x > mean(x), 1, 0))))
+  tem_mut <- mutate_all(as.data.frame(select(test_data, factors)),
+                        .funs = function(x) (as.factor(ifelse(x > mean(x), 1, 0))))
   return(cbind(temp_nf, tem_mut))
 }
 
@@ -216,7 +217,7 @@ to_factors <- function(test_data, factors){
 # Применим полученные знания на практике. Возьмем данные diamonds для работы 
 # в этой задаче. Создайте новый dataframe с именем high_price, в котором будут
 # хранится только 10 самых дорогих бриллиантов каждого цвета. Также в итоговом 
-# datafrmae должны храниться только две переменные color и price.
+# dataframe должны храниться только две переменные color и price.
 
 data(diamonds)
 
