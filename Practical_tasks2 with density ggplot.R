@@ -101,12 +101,7 @@ get_features(test_data_03)
 
 test_data_04 <- read.csv("https://stepic.org/media/attachments/course/524/test_data_passangers.csv")
 data_for_predict <-read.csv("https://stepic.org/media/attachments/course/524/predict_passangers.csv")
-test_data_04$is_prohibited <- as.factor(test_data_04$is_prohibited)
-test_data_04$type <- as.factor(test_data_04$type)
-data_for_predict$type <- as.factor(data_for_predict$type)
-lg_04 <- glm(is_prohibited ~ ., data=test_data_04, family=binomial)
-y_pred <- predict.glm(lg_04, newdata = data_for_predict[, 1:4], type="response")
-data_for_predict$passangers[which(y_pred == max(y_pred))]
+
 
 most_suspicious <- function(test_data, data_for_predict){
   test_data$is_prohibited <- as.factor(test_data$is_prohibited)
@@ -117,3 +112,54 @@ most_suspicious <- function(test_data, data_for_predict){
   data_for_predict$passangers[which(y_pred == max(y_pred))]
 }
 most_suspicious(test_data_04, data_for_predict)
+
+
+# Напишите функцию normality_test, которая получает на вход dataframe с 
+# произвольным количеством переменных разных типов (количественные, строки, факторы)
+# и проверяет нормальность распределения количественных переменных. 
+# Функция должна возвращать вектор значений p-уровней значимости теста 
+# shapiro.test для каждой количественной переменной.
+
+test_05 <- read.csv("https://stepic.org/media/attachments/course/524/test.csv")
+unlist(lapply(test_05,is.numeric))
+
+
+# Напишите функцию normality_by, которая принимает на вход dataframe 
+# c тремя переменными. Первая переменная количественная, 
+# вторая и третья имеют две градации и разбивают наши наблюдения 
+# на группы. Функция должна проверять распределение на 
+# нормальность в каждой получившейся группе и возвращать 
+# dataframe с результатами применения теста shapiro.test 
+# (формат вывода смотри ниже).
+
+
+test_data_06 <- read.csv("https://stepic.org/media/attachments/course/524/test_for_norm.csv", stringsAsFactors = T)
+test_data_06$y <- as.factor(test_data_06$y)
+test_data_06$z <- as.factor(test_data_06$z)
+gr_data_06 <- test_data_06 %>% 
+  group_by(y, z)
+summarise(gr_data_06, 
+          p_value = shapiro.test(x)$p.value)
+
+normality_by <- function(test){
+  test$y <- as.factor(test$y)
+  test$z <- as.factor(test$z)
+  gr_data_06 <- test %>% 
+    group_by(y, z)
+  summarise(gr_data_06, 
+            p_value = shapiro.test(x)$p.value) 
+}
+
+normality_by(test_data_06)
+
+
+# При помощи библиотеки ggplot2 визуализируйте распределение
+# переменной Sepal.Length в трех группах в данных Iris. 
+# Сохраните график в переменную obj, но не выводите график на печать.
+
+
+
+ggplot(iris, aes(x=Sepal.Length, fill=Species))+
+  geom_density(alpha=0.2)
+
+
