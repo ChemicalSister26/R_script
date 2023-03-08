@@ -122,3 +122,129 @@ ggplot(diamonds, aes(carat))+
   geom_density()+
   facet_grid(factor(cut)~.)
 
+
+glimpse(mtcars)
+mtcars$vs <- factor(mtcars$vs, labels=c("S", "V"))
+mtcars$am <- factor(mtcars$am, labels=c("A", "M"))
+
+ggplot(mtcars, aes(x=hp, y=mpg))+
+  geom_point(aes(color=factor(cyl)))+
+  facet_grid(vs~.)+
+  geom_smooth()
+
+
+# FACET WRAP
+ggplot(diamonds, aes(carat))+
+  geom_density()+
+  facet_wrap(~ factor(cut)+factor(color))
+
+
+ggplot(mtcars, aes(x=mpg))+
+  geom_dotplot()+
+  facet_grid(am~vs)
+
+
+ggplot(iris, aes(x=Sepal.Length))+
+  geom_density()+
+  facet_wrap(~Species)
+
+
+ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width))+
+  geom_point()+
+  geom_smooth()+
+  facet_wrap(~Species)
+
+
+movie <- read.csv('myMovieData.csv', stringsAsFactors = T)
+glimpse(movie)
+
+
+ggplot(movie, aes(x=Type, y=Budget))+
+  geom_boxplot()+
+  facet_grid(.~Year)+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+ggplot(mtcars, aes(x=hp, y=mpg, col=factor(am)))+
+  geom_point()+
+  scale_x_continuous(name='new_name',
+                     breaks=c(180, 220),
+                     limits=c(10, 350))
+
+
+ggplot(mtcars, aes(x=hp, y=mpg, col=factor(am)))+
+  geom_point()+
+  scale_x_continuous(expand=c(1,3))+
+  scale_color_discrete(name="Gear",
+                       labels=c("Auto", "Manual"))+
+  scale_color_manual(values=c('green', 'yellow'))
+
+
+ggplot(mtcars, aes(hp, fill=factor(am)))+
+  geom_density(alpha=0.4)+
+  scale_fill_discrete(name='gear')+
+  scale_fill_manual(values = c('brown', 'lightblue'))
+
+
+ggplot(mtcars, aes(x=hp, y=mpg, size=disp))+
+  geom_point()+
+  scale_size_continuous(name='what is this?')
+
+
+ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Species))+
+  geom_point()+
+  geom_smooth(method='lm')+
+  xlab("Длина чашелистика")+
+  ylab("Длина лепестка")+
+  scale_color_discrete(name='Вид цветка', 
+                       labels=c("Ирис щетинистый", "Ирис разноцветный", "Ирис виргинский"))+
+  scale_x_continuous(breaks = seq(4,8,1),
+                     limits=c(4,8))+
+  scale_y_continuous(breaks=seq(1, 7, 1))
+
+ggplot(mtcars, aes(factor(am), hp, fill=factor(cyl)))+
+  geom_boxplot()+
+  scale_fill_brewer(type='qual', palette = 6)+
+  theme_bw()+
+  theme(text=element_text(size=14), 
+        axis.line.x = element_line(color='red', linewidth =2),
+        axis.line.y = element_line(color='red', linewidth =2))
+
+ggplot(mtcars, aes(factor(am), hp, fill=factor(cyl)))+
+  geom_boxplot()+
+  theme_solarized()
+
+
+vis <- read.csv('example_data.csv', stringsAsFactors = T)
+
+glimpse(vis)
+
+ggplot(vis, aes(x=date, 
+                y=percent, 
+                col=system,
+                group=system))+
+  geom_line()+
+  geom_point(shape=21, size=3, fill='black')+
+  geom_point(shape=21, size=5.5)+
+  geom_point(shape=21, size=4)+ #we make the thickness of point lines more impressive
+  geom_vline(xintercept = 7.5, color='white')+
+  scale_y_continuous(breaks=c(0.0, 0.04, 0.08, 0.11, 0.15), 
+                     limits = c(0, 0.15),
+                     labels=scales::percent)+
+  scale_color_manual(values = c('orangered1', 'red', 'cyan', 'yellow1', 'springgreen2'))+
+  xlab('')+
+  ylab('')+
+  ggtitle('Popularity of Ubuntu family')+
+  theme_classic()+
+  theme(legend.title = element_blank(),
+        legend.position = 'top', 
+        plot.background = element_rect(color='black', fill='black'),
+        text = element_text(color='white'),
+        panel.background = element_rect(fill='black'),
+        legend.background = element_rect(color='black', fill='black'),
+        panel.grid.major.y = element_line(color='grey', linetype = 'dotted'),
+        axis.text.x = element_text(face='bold', size=16, color='white'),
+        axis.text.y = element_text(face='bold', size=16, color='white'),
+        legend.text = element_text(face='bold', size=16, color='white'),
+        title = element_text(face='bold', size=16, color='white'))
+
