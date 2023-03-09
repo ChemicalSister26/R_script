@@ -1,0 +1,37 @@
+---
+title: "Markdown_practice"
+author: "Alberdina_Mariya"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+data were taken from here <https://www.ourcommons.ca/en/open-data>[^1]
+
+[^1]: Here is the [link](https://www.ourcommons.ca/en/open-data) to our data.
+
+
+```{r, echo=FALSE}
+glacier <- read.csv('38100089.csv', na.strings = '..', stringsAsFactors = T)
+```
+
+The data set contains `r nrow(glacier)` rows and `r nlevels(glacier$GEO)` glaciers. Data were taken from `r min(glacier$REF_DATE)` to `r max(glacier$REF_DATE)` years. The data set includes this glaciers 
+
+ 
+## Hypothesis
+
+Are there statistically significant changes in glaciers mass in observed period? 
+For these purposes we will use **R** (version `r getRversion()`). It is better to choose for it **t-test**
+
+What we going to do:
+
+1. Read file
+2. Run t-test for each glacier and collect p_values
+3. Support the evidence with
+   + a table of results;
+   + a graph.
+
+ 

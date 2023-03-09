@@ -219,7 +219,7 @@ vis <- read.csv('example_data.csv', stringsAsFactors = T)
 
 glimpse(vis)
 
-ggplot(vis, aes(x=date, 
+ ggplot(vis, aes(x=date, 
                 y=percent, 
                 col=system,
                 group=system))+
@@ -247,4 +247,5 @@ ggplot(vis, aes(x=date,
         axis.text.y = element_text(face='bold', size=16, color='white'),
         legend.text = element_text(face='bold', size=16, color='white'),
         title = element_text(face='bold', size=16, color='white'))
+
 
