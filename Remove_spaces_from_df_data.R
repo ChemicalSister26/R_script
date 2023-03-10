@@ -8,9 +8,11 @@
 # в котором все числовые переменные будут переведены в числовой тип, при этом 
 # те переменные, которые действительно являются строковыми (например, V2 и V4)
 # никак преобразовывать не надо!
-
+library(dplyr)
 df_add <- as_tibble(read.csv('add_task1.csv'))
 str(df_add)
+test_data <- as.data.frame(list(V1 = c("0.1425", "-0.3805", "- 0.4216", "1.2 761", "0.6466"), V2 = c("II 2", "II 2", "II 2", "II 2", "LD 34"), V3 = c("0.991 6", "0.5515", "-0.5195", "-1.4387", "-1.8466"), V4 = c("II 2", "II 2", "II 2", "II 2", "LD 34"), V5 = c("-1.198 8", "-1.997 6", "-0.2982", "-0.180 3", "0.2846")))
+str(test_data)
 fix_data <- function(d){
   try.num <- function(x){
     xsd <- gsub(' ', '', x)
@@ -21,4 +23,5 @@ fix_data <- function(d){
   res_add <- as.data.frame(lapply(d, function(x) try.num(x)))
   return(res_add)
 }
-fix_data(df_add)
+res <- fix_data(test_data)
+glimpse(res)

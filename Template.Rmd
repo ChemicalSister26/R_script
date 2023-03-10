@@ -1,11 +1,22 @@
 ---
 title: "Markdown_practice"
 author: "Alberdina_Mariya"
-output: html_document
+output: 
+    html_document:
+      toc: TRUE
+      toc_float: TRUE
+    pdf_document:
+      toc: yes  
+#bibliography: bibl.bib      
+urlcolor: red #only fop PDF
+params:
+  filename: 38100089.csv #we may change dataset
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,
+                      message = F,
+                      warning = F)
 ```
 
 ## Introduction
@@ -15,7 +26,7 @@ data were taken from here <https://www.ourcommons.ca/en/open-data>[^1]
 
 
 ```{r, echo=FALSE}
-glacier <- read.csv('38100089.csv', na.strings = '..', stringsAsFactors = T)
+glacier <- read.csv(params$filename, na.strings = '..', stringsAsFactors = T)
 ```
 
 The data set contains `r nrow(glacier)` rows and `r nlevels(glacier$GEO)` glaciers. Data were taken from `r min(glacier$REF_DATE)` to `r max(glacier$REF_DATE)` years. The data set includes this glaciers 
@@ -26,7 +37,7 @@ The data set contains `r nrow(glacier)` rows and `r nlevels(glacier$GEO)` glacie
 Are there statistically significant changes in glaciers mass in observed period? 
 For these purposes we will use **R** (version `r getRversion()`). It is better to choose for it **t-test**
 
-What we going to do:
+What we going to do, describes the workflow below:
 
 1. Read file
 2. Run t-test for each glacier and collect p_values
@@ -34,4 +45,4 @@ What we going to do:
    + a table of results;
    + a graph.
 
- 
+## Bibliography 
